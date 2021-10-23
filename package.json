@@ -2,12 +2,17 @@
   "name": "quality-bot",
   "version": "1.0.0",
   "description": "Multi-purpose, High quality Discord utility bot",
-  "main": "bot.js",
+  "main": "src/bot.js",
   "repository": "git@github.com:LoukHin/quality-bot.git",
   "author": "LoukHin <loukhin3141@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "node-dev src/bot.js"
+  },
   "dependencies": {
+    "discord.js": "^13.2.0",
     "prettier": "^2.4.1"
   },
   "devDependencies": {
