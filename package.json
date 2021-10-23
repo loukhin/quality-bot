@@ -6,5 +6,11 @@
   "repository": "git@github.com:LoukHin/quality-bot.git",
   "author": "LoukHin <loukhin3141@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "prettier": "^2.4.1"
+  },
+  "devDependencies": {
+    "node-dev": "^7.0.0"
+  }
 }
