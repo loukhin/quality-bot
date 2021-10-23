@@ -1,0 +1,10 @@
+{
+  "name": "quality-bot",
+  "version": "1.0.0",
+  "description": "Multi-purpose, High quality Discord utility bot",
+  "main": "bot.js",
+  "repository": "git@github.com:LoukHin/quality-bot.git",
+  "author": "LoukHin <loukhin3141@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
