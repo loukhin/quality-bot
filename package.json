@@ -12,6 +12,7 @@
     "dev": "node-dev src/bot.js"
   },
   "dependencies": {
+    "@discordjs/voice": "^0.6.0",
     "discord.js": "^13.2.0",
     "prettier": "^2.4.1"
   },
