@@ -2,20 +2,27 @@
   "name": "quality-bot",
   "version": "1.0.0",
   "description": "Multi-purpose, High quality Discord utility bot",
-  "main": "src/bot.js",
+  "main": "index.js",
   "repository": "git@github.com:LoukHin/quality-bot.git",
   "author": "LoukHin <loukhin3141@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node src/bot.js",
-    "dev": "node-dev src/bot.js"
+    "start": "node index.js",
+    "dev": "node-dev -r dotenv/config index.js"
   },
   "dependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
-    "discord.js": "^13.2.0"
+    "@prisma/client": "3.4.1",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.2.0",
+    "prisma": "3.4.1",
+    "ytdl-core": "^4.9.1"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "node-dev": "^7.0.0",
     "prettier": "^2.4.1"
   }
