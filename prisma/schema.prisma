@@ -26,6 +26,7 @@ model Reminder {
   describtion String
   remindAt    DateTime
   userId      String
+  guildId     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
