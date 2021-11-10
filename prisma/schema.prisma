@@ -23,12 +23,13 @@ model Music {
 model Reminder {
   id          Int      @id @default(autoincrement())
   name        String
-  describtion String
   remindAt    DateTime
   userId      String
   guildId     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@unique([id, guildId, userId])
 }
 
 model ChannelBinding {
@@ -40,6 +41,7 @@ model ChannelBinding {
   updatedAt     DateTime @updatedAt
 
   @@unique([guildId, channelId])
+  @@unique([guildId, bindedCommand])
 }
 
 enum Command {
