@@ -1,7 +1,6 @@
 <h1 align="center">Quality Bot</h1>
-<p align="center">
-  Multi-purpose, High quality(?) Discord utility bot
-</p>
+
+Multi-purpose, ~~High quality~~ Discord utility bot
 
 > Created only for using in Introduction to Cloud Technology Project @ IT KMITL
 
