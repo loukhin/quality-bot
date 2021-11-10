@@ -13,7 +13,7 @@ module.exports = {
         .addStringOption(option =>
           option
             .setName('when')
-            .setDescription('When do you want to be reminded? `format: dd/mm/yy`')
+            .setDescription('When do you want to be reminded? (format: dd/mm/yy)')
             .setRequired(true)
         )
         .addStringOption(option =>
@@ -33,7 +33,7 @@ module.exports = {
         .addStringOption(option =>
           option
             .setName('when')
-            .setDescription('When do you want to be reminded? `format: dd/mm/yy`')
+            .setDescription('When do you want to be reminded? (format: dd/mm/yy)')
         )
         .addStringOption(option =>
           option.setName('name').setDescription('What do you want to be reminded of?')
@@ -56,32 +56,28 @@ module.exports = {
 
     switch (subCommand) {
       case 'add':
-        try {
-          const name = interaction.options.getString('name')
-          const rawRemindAt = interaction.options.getString('when')
-          const remindAt = new Date(rawRemindAt)
+        const name = interaction.options.getString('name')
+        const rawRemindAt = interaction.options.getString('when')
+        const remindAt = new Date(rawRemindAt)
 
-          if (isNaN(remindAt.getTime())) {
-            return await interaction.editReply({
-              content: `${rawRemindAt} is not a valid date!`
-            })
-          }
-
-          await prisma.reminder.create({
-            data: {
-              name,
-              remindAt,
-              guildId,
-              userId
-            }
+        if (isNaN(remindAt.getTime())) {
+          return await interaction.editReply({
+            content: `${rawRemindAt} is not a valid date!`
           })
-
-          await interaction.editReply({
-            content: `Your reminder has been created!`
-          })
-        } catch (error) {
-          console.error(error)
         }
+
+        await prisma.reminder.create({
+          data: {
+            name,
+            remindAt,
+            guildId,
+            userId
+          }
+        })
+
+        await interaction.editReply({
+          content: `Your reminder has been created!`
+        })
         break
       case 'edit':
         try {
@@ -119,9 +115,9 @@ module.exports = {
             content: `Your reminder has been updated!`
           })
         } catch (error) {
-          console.log(error)
+          console.error(error)
           await interaction.editReply({
-            content: `Not found`
+            content: `Reminder not found!`
           })
         }
         break
