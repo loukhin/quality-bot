@@ -3,6 +3,8 @@
   Multi-purpose, High quality(?) Discord utility bot
 </p>
 
+> Created only for using in Introduction to Cloud Technology Project @ IT KMITL
+
 ## Usage
 #### Install dependencies
 ```bash
