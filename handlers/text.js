@@ -12,7 +12,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS
   ],
-	partials: ['MESSAGE', 'REACTION'],
+  partials: ['MESSAGE', 'REACTION']
 })
 
 const eventFiles = fs.readdirSync(path.resolve('events')).filter(file => file.endsWith('.js'))
