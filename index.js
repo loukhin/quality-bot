@@ -1,6 +1,8 @@
 const path = require('path')
 const config = require(path.resolve('lib/config'))
 
-if (config.instanceType === 'text') {
-  require(path.resolve('handlers/text.js'))
+try {
+  require(path.resolve(`handlers/${config.instanceType}`))
+} catch {
+  throw new Error(`Handler for instance type '${config.instanceType}' not found.`)
 }
