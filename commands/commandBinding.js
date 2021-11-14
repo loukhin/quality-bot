@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const path = require('path')
-const { prisma } = require(path.resolve('lib/prisma'))
+const { prisma } = require('@/lib/prisma')
 
 const commandChoices = [
   ['Reminder', 'REMINDER'],

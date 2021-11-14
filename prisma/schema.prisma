@@ -10,24 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Music {
-  id        Int         @id @default(autoincrement())
-  guildId   String
-  youtubeId String
-  userId    String
-  status    MusicStatus @default(UNPLAYED)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-}
-
 model Reminder {
-  id          Int      @id @default(autoincrement())
-  name        String
-  remindAt    DateTime
-  userId      String
-  guildId     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  remindAt  DateTime
+  userId    String
+  guildId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([id, guildId, userId])
 }
@@ -48,11 +38,4 @@ enum Command {
   FILECONVERTER
   REMINDER
   MUSIC
-}
-
-enum MusicStatus {
-  UNPLAYED
-  PLAYING
-  PAUSED
-  PLAYED
 }

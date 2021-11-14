@@ -1,6 +1,5 @@
 const { MessageActionRow, MessageSelectMenu } = require('discord.js')
-const path = require('path')
-const { prisma } = require(path.resolve('lib/prisma'))
+const { prisma } = require('@/lib/prisma')
 
 module.exports = {
   name: 'messageCreate',

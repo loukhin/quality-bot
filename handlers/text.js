@@ -1,8 +1,9 @@
 const { Client, Collection, Intents } = require('discord.js')
 const fs = require('fs')
-const path = require('path')
 
-const config = require(path.resolve('lib/config'))
+const config = require('@/lib/config')
+const { connect } = require('@/lib/pgEvent')
+connect()
 
 const client = new Client({
   shards: config.shardId,
@@ -10,19 +11,20 @@ const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_VOICE_STATES
   ],
   partials: ['MESSAGE', 'REACTION']
 })
 
-const eventFiles = fs.readdirSync(path.resolve('events')).filter(file => file.endsWith('.js'))
-const commandFiles = fs.readdirSync(path.resolve('commands')).filter(file => file.endsWith('.js'))
+const eventFiles = fs.readdirSync('events').filter(file => file.endsWith('.js'))
+const commandFiles = fs.readdirSync('commands').filter(file => file.endsWith('.js'))
 
 client.commands = new Collection()
 const commands = []
 
 for (const file of eventFiles) {
-  const event = require(path.resolve(`events/${file}`))
+  const event = require(`@/events/${file}`)
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args))
   } else {
@@ -31,10 +33,10 @@ for (const file of eventFiles) {
 }
 
 for (const file of commandFiles) {
-  const command = require(path.resolve(`commands/${file}`))
+  const command = require(`@/commands/${file}`)
   client.commands.set(command.data.name, command)
   commands.push(command.data.toJSON())
 }
 
-require(path.resolve('lib/registerCommand'))(commands)
+require('@/lib/registerCommand')(commands)
 client.login(config.discordBotToken)
