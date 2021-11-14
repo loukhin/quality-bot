@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const got = require('got')
 
 const config = require('@/lib/config')
+const { prisma } = require('@/lib/prisma')
 const { search } = require('@/lib/youtube')
 const pg = require('@/lib/pgEvent')
 
@@ -24,6 +25,26 @@ module.exports = {
 
     const guildId = interaction.guildId
     const userId = interaction.user.id
+
+    const channelBinding = await prisma.channelBinding.findUnique({
+      where: {
+        guildId_bindedCommand: {
+          guildId: interaction.guildId,
+          bindedCommand: 'MUSIC'
+        }
+      }
+    })
+
+    if (!channelBinding)
+      return await interaction.editReply({
+        content: 'Please use `/command bind command:Music` to bind this channel for Music player!'
+      })
+    if (channelBinding.channelId !== interaction.channelId)
+      return await interaction.editReply({
+        content: `Please use this command in ${interaction.client.channels.cache.get(
+          channelBinding.channelId
+        )} or re-bind command channel`
+      })
 
     const userVoiceChannel = await interaction.member.voice.channel?.fetch()
 

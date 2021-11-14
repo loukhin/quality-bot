@@ -53,6 +53,26 @@ module.exports = {
     const userId = interaction.user.id
     const subCommand = interaction.options.getSubcommand()
 
+    const channelBinding = await prisma.channelBinding.findUnique({
+      where: {
+        guildId_bindedCommand: {
+          guildId: interaction.guildId,
+          bindedCommand: 'REMINDER'
+        }
+      }
+    })
+
+    if (!channelBinding)
+      return await interaction.editReply({
+        content: 'Please use `/command bind command:Reminder` to bind Reminder commands to this channel first!'
+      })
+    if (channelBinding.channelId !== interaction.channelId)
+      return await interaction.editReply({
+        content: `Please use this command in ${interaction.client.channels.cache.get(
+          channelBinding.channelId
+        )} or re-bind command channel`
+      })
+
     switch (subCommand) {
       case 'add':
         const name = interaction.options.getString('name')
