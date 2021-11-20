@@ -1,6 +1,10 @@
 const { MessageActionRow, MessageSelectMenu } = require('discord.js')
 const { prisma } = require('@/lib/prisma')
 
+const audioFileExtensions = ['wav', 'cda', 'mp3', 'wmv', 'aiff', 'mid', 'ogg', 'aac', 'm4a']
+const videoFileExtensions = ['avi', 'mp4', 'mov', 'mkv', 'flv', 'webm']
+const availableContentType = ['audio', 'video']
+
 module.exports = {
   name: 'messageCreate',
   async execute(message) {
@@ -16,29 +20,31 @@ module.exports = {
     })
 
     if (channelBinding?.bindedCommand !== 'FILECONVERTER') return
+    if (message.attachments?.size !== 1) {
+      const sentMessage = await message.reply({
+        content: `Please upload one file at a time!`
+      })
+      sentMessage.react('❌')
+      return
+    }
 
-    if (message.attachments.size) {
+    const attachment = message.attachments.values().next().value
+
+    const attachmentContentType = attachment.contentType?.split('/')[0]
+    if (availableContentType.includes(attachmentContentType)) {
+      const availableFileExtensions =
+        attachmentContentType === 'audio' ? audioFileExtensions : videoFileExtensions
       const actionRow = new MessageActionRow().addComponents(
         new MessageSelectMenu()
           .setCustomId('file-type')
           .setPlaceholder('Select file extension!')
-          .addOptions([
-            {
-              label: 'MP3',
-              description: 'Convert to MP3 file',
-              value: 'mp3'
-            },
-            {
-              label: 'MP4',
-              description: 'Convert to MP4 file',
-              value: 'mp4'
-            },
-            {
-              label: 'WAV',
-              description: 'Convert to WAV file',
-              value: 'wav'
-            }
-          ])
+          .addOptions(
+            availableFileExtensions.map(extension => ({
+              label: extension.toUpperCase(),
+              description: `Convert to ${extension.toUpperCase()} file`,
+              value: extension
+            }))
+          )
       )
       const sentMessage = await message.reply({
         content: 'Do you want to convert this file?',
@@ -52,6 +58,13 @@ module.exports = {
       //     components: []
       //   })
       // }, 2000)
+    } else {
+      const sentMessage = await message.reply({
+        content: `This file is not supported! (Support only ${availableContentType.join(
+          ', '
+        )} file)`
+      })
+      sentMessage.react('❌')
     }
   }
 }
