@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "fluent-ffmpeg": "^2.1.2"
+    "aws-sdk": "^2.1033.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "got": "^11.8.3"
   }
 }
