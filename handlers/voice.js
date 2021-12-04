@@ -43,7 +43,10 @@ pg.on('stop', async ({ guildId, interactionData }) => {
   if (interactionData) {
     try {
       const interaction = new InteractionWebhook(client, interactionData.id, interactionData.token)
-      await interaction.editMessage(interactionData.messageId, 'Stopping music player and leaving...')
+      await interaction.editMessage(
+        interactionData.messageId,
+        'Stopping music player and leaving...'
+      )
     } catch (error) {
       console.error(error)
     }
@@ -94,6 +97,20 @@ pg.on('skip', async ({ guildId, interactionData }) => {
   client.musicQueue.set(guildId, guildQueue)
 })
 
+pg.on('queue', async ({ guildId, interactionData }) => {
+  const guildQueue = client.musicQueue.get(guildId)
+  if (!guildQueue) return
+  try {
+    const interaction = new InteractionWebhook(client, interactionData.id, interactionData.token)
+    const queueMessage = `Now playing ${guildQueue.songs[0].info.title}\n${guildQueue.songs
+      .slice(1)
+      .map((song, index) => `${index+2}. ${song.info.title}\n`)}`
+    await interaction.editMessage(interactionData.messageId, queueMessage)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 pg.on('play', async ({ guildId, interactionData, musicData }) => {
   const guildQueue = client.musicQueue.get(guildId)
   if (!guildQueue) return
@@ -106,7 +123,7 @@ pg.on('play', async ({ guildId, interactionData, musicData }) => {
   if (guildQueue.isPlaying && guildQueue.player.state.status !== AudioPlayerStatus.Playing) {
     const resource = await createYoutubeResource(`https://youtu.be/${guildQueue.songs[0].id}`)
     guildQueue.player.play(resource)
-  } else {
+  } else if (!musicData) {
     guildQueue.player.unpause()
     try {
       const interaction = new InteractionWebhook(client, interactionData.id, interactionData.token)

@@ -1589,10 +1589,10 @@ yallist@^4.0.0:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-youtube-dl-exec@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/youtube-dl-exec/-/youtube-dl-exec-1.3.3.tgz#36352c4f41e2ef642c3bd405fb4e8a55c1113b25"
-  integrity sha512-hRt0WIqEp9sotE8/LpNxMjWn51GPJxyEkdvtvoAdauHdFja2+r0/6TL8whDz+4iNeeWvhhWv0ftB/1MKWsFl/g==
+youtube-dl-exec@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/youtube-dl-exec/-/youtube-dl-exec-2.0.0.tgz#6f8a506047084ae59efa7d32adc5c6d56bc0ddbf"
+  integrity sha512-wD5BSkxC1o3rzj+1ktXdWObvkorW3Zvl1E+l56JQqYFTek3d9SR7o1RbjLiQZYQpXpoCPw0zV16SNDXjhVksXQ==
   dependencies:
     dargs "~7.0.0"
     execa "~5.1.0"

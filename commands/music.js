@@ -19,12 +19,12 @@ module.exports = {
     )
     .addSubcommand(subcommand => subcommand.setName('pause').setDescription('Pause music player!'))
     .addSubcommand(subcommand => subcommand.setName('stop').setDescription('Stop music player!'))
-    .addSubcommand(subcommand => subcommand.setName('skip').setDescription('Skip current track!')),
+    .addSubcommand(subcommand => subcommand.setName('skip').setDescription('Skip current track!'))
+    .addSubcommand(subcommand => subcommand.setName('queue').setDescription('View song queue')),
   async execute(interaction) {
     const message = await interaction.deferReply({ fetchReply: true })
 
     const guildId = interaction.guildId
-    const userId = interaction.user.id
 
     const channelBinding = await prisma.channelBinding.findUnique({
       where: {
@@ -62,7 +62,7 @@ module.exports = {
     if (subCommand === 'join') {
       if (botVoiceChannel?.id === userVoiceChannel.id)
         return await interaction.editReply(`I'm already in your voice channel`)
-      // console.log(interaction.member.voice.channel?.members)
+
       await got.post(`${config.elbUrl}/api/join`, {
         json: {
           type: 'join',
