@@ -2,6 +2,7 @@ const ffmpeg = require('fluent-ffmpeg')
 const stream = require('stream')
 const fs = require('fs')
 const got = require('got')
+const uuid = require('uuid')
 
 const aws = require('aws-sdk')
 const s3 = new aws.S3({ apiVersion: '2006-03-01' })
@@ -10,14 +11,17 @@ const audioFileExtensions = ['wav', 'cda', 'mp3', 'wmv', 'aiff', 'mid', 'ogg', '
 const videoFileExtensions = ['avi', 'mp4', 'mov', 'mkv', 'flv', 'webm']
 
 exports.handler = async (event, context, callback) => {
-  const { sourceType, sourceUrl, targetType } = event
-  const availableExtensions = sourceType === 'audio' ? audioFileExtensions : videoFileExtensions
+  const { source, target } = event
+  const availableExtensions = source.kind === 'audio' ? audioFileExtensions : videoFileExtensions
   try {
-    if (!availableExtensions.includes(targetType))
+    if (!availableExtensions.includes(target.type))
       return callback(new TypeError('target type is invalid!'))
-    const pass = new stream.PassThrough()
-    await got.stream(event.url).pipe(pass)
-    const result = await uploadFileOnS3(pass)
+    const sourceFile = new stream.PassThrough()
+    await got.stream(source.url).pipe(sourceFile)
+    const fileName = `qb_${uuid.v4()}.${target.type}`
+    const convertedFile = await convertFile(sourceFile, fileName)
+    const convertedStream = fs.createReadStream(convertedFile)
+    const result = await uploadFileOnS3(convertedStream, fileName)
     callback(null, {
       result
     })
@@ -26,9 +30,21 @@ exports.handler = async (event, context, callback) => {
   }
 }
 
-const uploadFileOnS3 = async (stream, fileName = 'test') => {
+const convertFile = async (input, output) => {
+  return new Promise((resolve, reject) => {
+    ffmpeg()
+      .input(input)
+      .output(`/tmp/${output}`)
+      .on('progress', progress => console.log(progress))
+      .on('error', err => reject(err))
+      .on('end', () => resolve(`/tmp/${output}`))
+      .run()
+  })
+}
+
+const uploadFileOnS3 = async (stream, fileName) => {
   const params = {
-    Bucket: 'qb-file-converter',
+    Bucket: process.env.BUCKET_NAME,
     Key: fileName,
     Body: stream
   }
