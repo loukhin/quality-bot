@@ -51,13 +51,6 @@ module.exports = {
         components: [actionRow]
       })
       sentMessage.react('❌')
-      // setTimeout(() => {
-      //   actionRow.components[0].setDisabled(true)
-      //   sentMessage.edit({
-      //     content: `This is your file: ${attachment.attachment}`,
-      //     components: []
-      //   })
-      // }, 2000)
     } else {
       const sentMessage = await message.reply({
         content: `This file is not supported! (Support only ${availableContentType.join(
