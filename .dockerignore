@@ -1,0 +1,4 @@
+node_modules
+lambda
+.DS_Store
+.env*
