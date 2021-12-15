@@ -3,7 +3,7 @@ const got = require('got')
 
 const config = require('@/lib/config')
 const { prisma } = require('@/lib/prisma')
-const { search } = require('@/lib/youtube')
+const { search, makeMetadata } = require('@/lib/youtube')
 const pg = require('@/lib/pgEvent')
 
 module.exports = {
@@ -77,7 +77,14 @@ module.exports = {
           "I'm not in a voice channel, please use `/ms join` first!"
         )
       const music = interaction.options.getString('music')
-      const searchResult = music ? await search(music) : null
+      const youtubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+
+      const searchResult = music
+        ? youtubeRegex.test(music)
+          ? await makeMetadata(music.match(youtubeRegex)[5])
+          : await search(music)
+        : null
+      console.log({searchResult})
 
       if (searchResult)
         await interaction.editReply(
