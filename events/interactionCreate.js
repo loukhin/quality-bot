@@ -51,6 +51,7 @@ module.exports = {
         await command.execute(interaction)
       } catch (error) {
         console.error(error)
+        console.error(error.response)
         const reply = {
           content: 'There was an error while executing this command!',
           ephemeral: true
